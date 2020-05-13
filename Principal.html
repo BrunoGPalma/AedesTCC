@@ -12,12 +12,10 @@
     <div id="login" hidden="hidden">
         {{ message }}
     </div>
-
-    <script src="https://unpkg.com/vue/dist/vue.js" ></script>
     
     <img src="static/Mosquitarrest.png" alt="Mosquitarrest">
 
-    <form method="post" action="/" enctype="multipart/form-data">
+    <form method="post" id="app" @submit="checkForm" action="/" enctype="multipart/form-data">
         <div id="msgErro" hidden="hidden">
             <p v-if="errors.length">
                 <b>Por favor, corrija o(s) seguinte(s) erro(s):</b>
@@ -37,8 +35,6 @@
         <br><br>
         <button class="submit" type="submit">Enviar</button>
     </form>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 		
     <script>
         function previewImagem(){
@@ -60,7 +56,36 @@
             }
         }
     </script>
+    <script>
+        const app = new Vue({
+                el: '#app',
+                data: {
+                    errors: [],
+                    file: null
+                },
+                methods: {
+                    checkForm: function (e) {
+                    var msgErro = document.querySelector('div[id=msgErro]');
+                    this.errors = [];
+                        if (!this.file) {
+                            this.errors.push('• É necessário escolher uma imagem.');
+                            msgErro.hidden = true;
+                        }
+                        else{
+                            msgErro.hidden = false;
+                        }
 
+                        if (!this.errors.length) {
+                            return true;
+                        }
+                        e.preventDefault();
+                    }
+                }
+        })
+    </script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/vue/dist/vue.js" ></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
