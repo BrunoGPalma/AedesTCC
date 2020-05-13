@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="styles/estiloHome.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+	<meta charset="UTF-8">
+    <title>Mosquitarrest</title>
+    
+</head>
+<body style="background-color: rgb(148, 205, 169);">
+    <div id="login" hidden="hidden">
+        {{ message }}
+    </div>
+
+    <script src="https://unpkg.com/vue/dist/vue.js" ></script>
+    
+    <img src="static/Mosquitarrest.png" alt="Mosquitarrest">
+
+    <form method="post" id="app" @submit="checkForm" action="/" novalidate="true" enctype="multipart/form-data">
+        <div id="msgErro">
+            <p v-if="errors.length">
+                <b>Por favor, corrija o(s) seguinte(s) erro(s):</b>
+                <br>
+                <label v-for="error in errors">{{ error }}</label>
+            </p>
+        </div>
+        <div class="custom-file">
+            <input type="file" class="custom-file-input" id="imgInp">    
+            <label class="custom-file-label" for="validatedCustomFile" style=" width: 25%; margin-left: auto; margin-right: auto;">Escolha um arquivo...</label>
+        </div>
+        
+        <div id="imgResult">
+            <img id="blah" src="#" alt="your image"/>
+        </div>
+
+        <br><br>
+        <button class="submit" type="submit">Enviar</button>
+    </form>
+
+    <script>
+            function readURL(input) {
+            if (input.files && input.files[0]) {
+              var reader = new FileReader();
+              
+              reader.onload = function(e) {
+                  document.querySelector('#blah').setAttribute('src',e.target.result);
+              }
+              
+              reader.readAsDataURL(input.files[0]);
+            }
+          }
+          
+          document.querySelector('#imgInp').addEventListener('change',function(){readURL(this)});
+    </script>
+
+    <script>
+        const app = new Vue({
+                el: '#app',
+                data: {
+                    errors: [],
+                    file: null
+                },
+                methods: {
+                    checkForm: function (e) {
+                    this.errors = [];
+                        if (!this.file) {
+                            this.errors.push('• É necessário escolher uma imagem.');
+                        }
+                        else{
+                            var elemento = document.getElementById('file');
+                            alert(elemento);
+                            var url = 'MostraImagem.html?file=' + elemento;
+                            alert(url);
+                            $("#app").attr("action", url);
+                        }
+
+                        if (!this.errors.length) {
+                            return true;
+                        }
+                        e.preventDefault();
+                    }
+                }
+        })
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>
