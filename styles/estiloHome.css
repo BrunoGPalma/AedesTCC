@@ -31,7 +31,13 @@ img{
     margin-bottom: 5%;
 }
 #imgResult{
-    height: 10%;
-    width: 10%;
+    height: 40%;
+    width: 40%;
     align-items: center;
+    margin-left: 30%;
+    margin-top: 2%;
+}
+#mostra{
+    border-style: solid;
+    border-color: rgb(87, 49, 34);
 }

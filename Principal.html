@@ -17,8 +17,8 @@
     
     <img src="static/Mosquitarrest.png" alt="Mosquitarrest">
 
-    <form method="post" id="app" @submit="checkForm" action="/" novalidate="true" enctype="multipart/form-data">
-        <div id="msgErro">
+    <form method="post" action="/" enctype="multipart/form-data">
+        <div id="msgErro" hidden="hidden">
             <p v-if="errors.length">
                 <b>Por favor, corrija o(s) seguinte(s) erro(s):</b>
                 <br>
@@ -26,62 +26,39 @@
             </p>
         </div>
         <div class="custom-file">
-            <input type="file" class="custom-file-input" id="imgInp">    
+            <input type="file" class="custom-file-input" name="imgInp" id="imgInp" onchange="previewImagem()">    
             <label class="custom-file-label" for="validatedCustomFile" style=" width: 25%; margin-left: auto; margin-right: auto;">Escolha um arquivo...</label>
         </div>
         
-        <div id="imgResult">
-            <img id="blah" src="#" alt="your image"/>
+        <div id="imgResult" hidden="hidden">
+            <img id="mostra" name="mostra" alt="your image"/>
         </div>
 
         <br><br>
         <button class="submit" type="submit">Enviar</button>
     </form>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		
     <script>
-            function readURL(input) {
-            if (input.files && input.files[0]) {
-              var reader = new FileReader();
-              
-              reader.onload = function(e) {
-                  document.querySelector('#blah').setAttribute('src',e.target.result);
-              }
-              
-              reader.readAsDataURL(input.files[0]);
+        function previewImagem(){
+            var imagem = document.querySelector('input[name=imgInp]').files[0];
+            var preview = document.querySelector('img[name=mostra]');
+            var divImg = document.querySelector('div[id=imgResult]');
+
+            var reader = new FileReader();
+            
+            reader.onloadend = function () {
+                preview.src = reader.result;
+                divImg.hidden = false;
             }
-          }
-          
-          document.querySelector('#imgInp').addEventListener('change',function(){readURL(this)});
-    </script>
-
-    <script>
-        const app = new Vue({
-                el: '#app',
-                data: {
-                    errors: [],
-                    file: null
-                },
-                methods: {
-                    checkForm: function (e) {
-                    this.errors = [];
-                        if (!this.file) {
-                            this.errors.push('• É necessário escolher uma imagem.');
-                        }
-                        else{
-                            var elemento = document.getElementById('file');
-                            alert(elemento);
-                            var url = 'MostraImagem.html?file=' + elemento;
-                            alert(url);
-                            $("#app").attr("action", url);
-                        }
-
-                        if (!this.errors.length) {
-                            return true;
-                        }
-                        e.preventDefault();
-                    }
-                }
-        })
+            
+            if(imagem){
+                reader.readAsDataURL(imagem);
+            }else{
+                preview.src = "";
+            }
+        }
     </script>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
